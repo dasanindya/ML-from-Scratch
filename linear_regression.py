@@ -1,9 +1,5 @@
-from audioop import bias
-from sys import pycache_prefix
 
 import numpy as np
-from scipy.spatial.distance import num_obs_dm
-
 
 class LinearRegression:
     def __init__(self, lr=0.001, n_iters=1000):
@@ -19,6 +15,11 @@ class LinearRegression:
 
         for _ in range(self.n_iters):
             y_predicted = np.dot(X, self.weights) + self.bias
+            # X (Input Data): (N, D), self.weights (Weights): (D, )
+            # np.dot(X, self.weights): (N, D) X (D, ) -> (N, )
+            # self.bias (Bias): 1 scalar
+            # np.dot(X, self.weights) + self.bias: It is broadcasted across all N samples during addition.
+            # y_predicted (Output): (N, )
 
             dw = (1/n_samples) * np.dot(X.T, (y_predicted - y))
             db = (1/n_samples) * np.sum(y_predicted-y)
